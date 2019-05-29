@@ -1,6 +1,13 @@
 <resources>
-    <string name="app_name">TP_Final_Android</string>
+    <string name="app_name">MyToDo</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_fragment_done">Done</string>
+    <string name="hello_fragment_home">Home</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
