@@ -1,14 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".AddFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:layout_gravity="center_vertical"
+              android:padding="16dp" android:gravity="center">
+
     <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment"/>
+            android:text="@string/add_todo_title"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp" android:id="@+id/addTodoTitle"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:layout_gravity="center_horizontal"
+    />
 
-</FrameLayout>
+    <EditText
+            android:id="@+id/input_todo_title"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:hint="@string/add_todo_field_title"
+            android:inputType="text"/>
+
+    <EditText
+            android:hint="@string/add_todo_field_comment"
+            android:id="@+id/input_todo_comment"
+            android:layout_width="fill_parent"
+            android:layout_height="75dp"
+            android:gravity="top"
+            android:padding="4dp"
+            android:textSize="17sp"
+            android:inputType="textMultiLine|textCapSentences"
+            android:layout_gravity="start"
+    />
+    <Button
+            android:text="@string/input_todo_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_todo_submit"
+    />
+
+
+</LinearLayout>

@@ -1,12 +1,23 @@
 package com.aza.tp_final_android
 
+import adapter.TodoAdapter
+import android.app.ProgressDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.firestore.DocumentSnapshot
+import kotlinx.android.synthetic.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
+import models.Todo
+import service.TodoService
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -14,17 +25,22 @@ import android.view.ViewGroup
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class HomeFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListener {
+
     private var listener: OnFragmentInteractionListener? = null
+
+    var todoList: MutableList<Todo> = mutableListOf()
+    lateinit var todoRecyclerView: RecyclerView
+    lateinit var layoutManager: RecyclerView.LayoutManager
+
+    lateinit var adapter: TodoAdapter
+    lateinit var progress: ProgressDialog
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
     }
 
@@ -33,7 +49,56 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        progress = ProgressDialog(activity)
+
+        todoRecyclerView = view.recycler_view_todo
+        todoRecyclerView.setHasFixedSize(true)
+        layoutManager = LinearLayoutManager(context)
+        todoRecyclerView.layoutManager = layoutManager
+
+        showData()
+
+        return view
+    }
+
+    private fun showData() {
+
+        progress.setTitle(getString(R.string.get_todos_progress))
+        progress.show()
+
+        TodoService.todoCollection
+            .get()
+            .addOnCompleteListener(OnCompleteListener {
+                progress.dismiss()
+
+                if (!it.isSuccessful){
+                    Toast.makeText(context, getString(R.string.get_todos_failure), Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    for (doc: DocumentSnapshot in it.result!!){
+                        val id = doc.getString("id")
+                        val title = doc.getString("title").toString()
+                        val comment = doc.getString("comment")
+
+                        val todo = Todo(id, title, comment)
+
+                        todoList.add(todo)
+                    }
+
+                    adapter = TodoAdapter(this, todoList)
+                    todoRecyclerView.adapter = adapter
+                }
+            })
+    }
+
+    override fun onTodoClick(view: View, position: Number) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onTodoLongClick(view: View, position: Number) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     // TODO: Rename method, update argument and hook method into UI event

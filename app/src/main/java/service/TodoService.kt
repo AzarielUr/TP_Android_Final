@@ -2,9 +2,11 @@ package service
 
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import models.Todo
+import java.util.*
 
 object TodoService {
 
@@ -17,10 +19,12 @@ object TodoService {
 
     // --- CREATE ---
 
-    fun createTodo(uid: String, title: String): Task<Void> {
-        val userToCreate = Todo(uid, title, false)
-        return TodoService.todoCollection.document(uid).set(userToCreate)
+    fun createTodo(title: String, comment: String?): Task<Void> {
+        val todoToCreate = Todo(null, title, comment)
+        val id = UUID.randomUUID().toString()
+        return TodoService.todoCollection.document(id).set(todoToCreate)
     }
+
 
     // --- GET ---
 

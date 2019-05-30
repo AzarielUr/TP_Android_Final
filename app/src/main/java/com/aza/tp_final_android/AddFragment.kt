@@ -1,5 +1,6 @@
 package com.aza.tp_final_android
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -7,42 +8,76 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnFailureListener
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_add.*
+import service.TodoService
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [AddFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [AddFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
+
 class AddFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var et_title: EditText
+    private lateinit var et_comment: EditText
+    private lateinit var btn_submit: Button
+    private lateinit var progress: ProgressDialog
+
+
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
+
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add, container, false)
+        val view = inflater.inflate(R.layout.fragment_add, container, false)
+
+        et_title = view.findViewById(R.id.input_todo_title)
+        et_comment = view.findViewById(R.id.input_todo_comment)
+        btn_submit = view.findViewById(R.id.add_todo_submit)
+
+        btn_submit.setOnClickListener {
+            onAddTodo()
+        }
+
+        progress = ProgressDialog(activity)
+        progress.setTitle(getString(R.string.add_todo_progress))
+
+        return view
+
+    }
+
+    private fun onAddTodo(){
+        val title: String = et_title.text.toString()
+        val comment: String? = et_comment.text.toString()
+
+        progress.show()
+
+        TodoService.createTodo(title, comment)
+            .addOnCompleteListener(OnCompleteListener {
+                progress.dismiss()
+
+                if (it.isSuccessful){
+                    Toast.makeText(activity, getString(R.string.added_todo_text), Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(activity, getString(R.string.added_todo_text_fail), Toast.LENGTH_SHORT).show()
+                }
+
+                (activity as MainActivity).navigation.selectedItemId = R.id.navigation_home
+        })
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -94,8 +129,7 @@ class AddFragment : Fragment() {
         fun newInstance(param1: String, param2: String) =
             AddFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
     }

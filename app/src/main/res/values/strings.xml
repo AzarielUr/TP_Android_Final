@@ -1,13 +1,26 @@
 <resources>
     <string name="app_name">MyToDo</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- Navigation -->
+    <string name="title_home">ToDo</string>
+    <string name="title_dashboard">Done</string>
+    <string name="title_notifications">New</string>
+
+
     <string name="hello_fragment_done">Done</string>
-    <string name="hello_fragment_home">Home</string>
+    <string name="hello_fragment_home">Todo</string>
+    <string name="title_add_todo">New</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Create form -->
+    <string name="add_todo_title">Add a Todo</string>
+    <string name="add_todo_field_title">Title</string>
+    <string name="add_todo_field_comment">Comment</string>
+    <string name="add_todo_submit">Save</string>
+    <string name="input_todo_save">Save</string>
+    <string name="added_todo_text">Todo added!</string>
+    <string name="added_todo_text_fail">Failed to upload todo</string>
+    <string name="add_todo_progress">Saving new todo…</string>
+    <string name="get_todos_progress">Recovering todo list...</string>
+    <string name="get_todos_failure">Impossible de load todos</string>
+
 </resources>
