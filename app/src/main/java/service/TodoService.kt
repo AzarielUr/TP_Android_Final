@@ -1,10 +1,7 @@
 package service
 
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.*
 import models.Todo
 import java.util.*
 
@@ -16,6 +13,17 @@ object TodoService {
 
     val todoCollection: CollectionReference
         get() = FirebaseFirestore.getInstance().collection(COLLECTION_NAME)
+
+
+    // -- GET ---
+    fun getIncompleteTodos() : Task<QuerySnapshot> {
+        return todoCollection.whereEqualTo("done", false).get()
+    }
+
+    fun getCompletedTodos() : Task<QuerySnapshot> {
+        return todoCollection.whereEqualTo("done", true).get()
+    }
+
 
     // --- CREATE ---
 
@@ -47,8 +55,8 @@ object TodoService {
         return TodoService.todoCollection.document(uid).update("title", username)
     }
 
-    fun updateCompletion(done: Boolean, uid: String): Task<Void> {
-        return TodoService.todoCollection.document(uid).update("done", done)
+    fun updateCompletion(id: String, done: Boolean): Task<Void> {
+        return TodoService.todoCollection.document(id).update("done", done)
     }
 
 

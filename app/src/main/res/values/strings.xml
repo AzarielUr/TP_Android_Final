@@ -39,8 +39,10 @@
     <string name="updated_todo_text">Todo updated!</string>
     <string name="updated_todo_text_fail">Failed to update todo</string>
     <string name="update_todo_progress">Updating todo…</string>
-
-
+    <string name="done_message">Todo marked as done!</string>
+    <string name="done_error_message">Failed to update todo...</string>
+    <string name="incompleted_message">Todo marked incomplete</string>
+    <string name="incompleted_error_message">Failed to update todo</string>
 
 
 </resources>

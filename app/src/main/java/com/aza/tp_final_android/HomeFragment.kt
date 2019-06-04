@@ -41,9 +41,6 @@ class HomeFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
     }
 
     override fun onCreateView(
@@ -67,11 +64,12 @@ class HomeFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
 
     private fun showData() {
 
+        todoList.clear()
+
         progress.setTitle(getString(R.string.get_todos_progress))
         progress.show()
 
-        TodoService.todoCollection
-            .get()
+        TodoService.getIncompleteTodos()
             .addOnCompleteListener(OnCompleteListener {
                 progress.dismiss()
 
@@ -80,7 +78,7 @@ class HomeFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
                 }
                 else{
                     for (doc: DocumentSnapshot in it.result!!){
-                        val id = doc.getString("id")
+                        val id = doc.id
                         val title = doc.getString("title").toString()
                         val comment = doc.getString("comment")
 
@@ -110,30 +108,31 @@ class HomeFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
 
         // TODO: Export res
-        val options = arrayOf("Update", "Delete")
+        val options = arrayOf("Mark done", "Delete")
         builder.setItems(options, DialogInterface.OnClickListener {
                 dialog, which ->
             run {
                 if (which == 0) //Update
                 {
-                    val id = todoList[position].id
-                    val title = todoList[position].title
-                    val comment = todoList[position].comment
-
-                    val intent = Intent(context, TodoActivity::class.java)
-                    intent.putExtra("id", id)
-                    intent.putExtra("title", title)
-                    intent.putExtra("comment", comment)
-
-                    context?.startActivity(intent)
+                    val id = todoList[position].id ?: ""
+                    TodoService.updateCompletion(id, true).addOnCompleteListener{
+                        if (it.isSuccessful){
+                            Toast.makeText(activity, getString(R.string.done_message), Toast.LENGTH_SHORT).show()
+                            showData()
+                        }
+                        else {
+                            Toast.makeText(activity, getString(R.string.done_error_message), Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
                 if (which == 1) //Delete
                 {
-
+                    //TODO: Delete dialog
                 }
             }
         }).create().show()
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
@@ -154,31 +153,13 @@ class HomeFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
         listener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
+
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
