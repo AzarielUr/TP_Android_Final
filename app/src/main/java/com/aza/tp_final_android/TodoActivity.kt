@@ -37,10 +37,8 @@ class TodoActivity : AppCompatActivity() {
     private lateinit var et_comment: EditText
     private lateinit var btn_submit: Button
     private lateinit var progress: ProgressDialog
+    private var actionBar: ActionBar? = null
 
-
-
-    val actionBar: ActionBar? = supportActionBar
 
     lateinit var id: String
     lateinit var title: String
@@ -57,10 +55,12 @@ class TodoActivity : AppCompatActivity() {
         progress = ProgressDialog(this)
         progress.setTitle(getString(R.string.update_todo_progress))
 
+        actionBar = supportActionBar
+
         val bundle = intent.extras
-        id = bundle?.getString("id") ?: ""
-        title = bundle?.getString("title") ?: ""
-        comment = bundle?.getString("comment") ?: ""
+        id = bundle?.getString("ID_EXTRA") ?: ""
+        title = bundle?.getString("TITLE_EXTRA") ?: ""
+        comment = bundle?.getString("COMMENT_EXTRA") ?: ""
 
 
         actionBar?.title = "Update $title"
