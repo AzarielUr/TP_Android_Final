@@ -39,8 +39,8 @@ class TodoAdapter(val listener: TodoViewHolder.TodoListClickListener, var todoLi
         private lateinit var clickListener: TodoViewHolder.TodoListClickListener
 
         interface TodoListClickListener{
-            fun onTodoClick(view: View, position: Number)
-            fun onTodoLongClick(view: View, position: Number)
+            fun onTodoClick(view: View, position: Int)
+            fun onTodoLongClick(view: View, position: Int)
         }
 
         fun setOnClickListener(cl: TodoViewHolder.TodoListClickListener){

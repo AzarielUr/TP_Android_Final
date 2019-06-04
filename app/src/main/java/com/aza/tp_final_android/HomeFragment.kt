@@ -1,8 +1,11 @@
 package com.aza.tp_final_android
 
 import adapter.TodoAdapter
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -14,7 +17,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.firestore.DocumentSnapshot
-import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import models.Todo
 import service.TodoService
@@ -93,12 +95,44 @@ class HomeFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
             })
     }
 
-    override fun onTodoClick(view: View, position: Number) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onTodoClick(view: View, position: Int) {
+
+        val id = todoList[position].id ?: ""
+        val title = todoList[position].title
+        val comment = todoList[position].comment ?: ""
+
+        TodoActivity.newIntent(context, id, title, comment, false).run {
+            startActivity(this)
+        }
     }
 
-    override fun onTodoLongClick(view: View, position: Number) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onTodoLongClick(view: View, position: Int) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+
+        // TODO: Export res
+        val options = arrayOf("Update", "Delete")
+        builder.setItems(options, DialogInterface.OnClickListener {
+                dialog, which ->
+            run {
+                if (which == 0) //Update
+                {
+                    val id = todoList[position].id
+                    val title = todoList[position].title
+                    val comment = todoList[position].comment
+
+                    val intent = Intent(context, TodoActivity::class.java)
+                    intent.putExtra("id", id)
+                    intent.putExtra("title", title)
+                    intent.putExtra("comment", comment)
+
+                    context?.startActivity(intent)
+                }
+                if (which == 1) //Delete
+                {
+
+                }
+            }
+        }).create().show()
     }
 
     // TODO: Rename method, update argument and hook method into UI event

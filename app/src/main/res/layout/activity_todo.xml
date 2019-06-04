@@ -10,7 +10,8 @@
     <TextView
             android:text="@string/add_todo_title"
             android:layout_width="wrap_content"
-            android:layout_height="45dp" android:id="@+id/addTodoTitle"
+            android:layout_height="45dp"
+            android:id="@+id/tv_todo_title"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:layout_gravity="center_horizontal"
     />
@@ -36,10 +37,10 @@
             android:layout_gravity="start"
     />
     <Button
-            android:text="@string/add_todo_submit"
+            android:text="@string/update_todo_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/add_todo_submit"
+            android:id="@+id/btn_update_todo"
     />
 
 
