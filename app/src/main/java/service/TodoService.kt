@@ -33,6 +33,15 @@ object TodoService {
     }
 
     // --- UPDATE ---
+    fun updateTodo(id: String, title: String, comment: String, done: Boolean): Task<Void>
+    {
+        val todoToUpdate = Todo(id, title, comment, done)
+        return TodoService.todoCollection.document(id).update(
+            "title", title,
+            "comment", comment,
+            "done", done
+        )
+    }
 
     fun updateTitle(username: String, uid: String): Task<Void> {
         return TodoService.todoCollection.document(uid).update("title", username)

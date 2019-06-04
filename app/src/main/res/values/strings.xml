@@ -11,16 +11,36 @@
     <string name="hello_fragment_home">Todo</string>
     <string name="title_add_todo">New</string>
 
-    <!-- Create form -->
+    <!-- Home Page -->
+
+    <!-- Load Todos -->
+    <string name="get_todos_progress">Recovering todo list…</string>
+    <string name="get_todos_failure">Impossible de load todos</string>
+
+    <!-- Form fields -->
+    <string name="todo_field_title">Title</string>
+    <string name="todo_field_comment">Comment</string>
+    <string name="todo_field_done">Done</string>
+
+    <!-- Add form -->
     <string name="add_todo_title">Add a Todo</string>
-    <string name="add_todo_field_title">Title</string>
-    <string name="add_todo_field_comment">Comment</string>
     <string name="add_todo_submit">Save</string>
-    <string name="input_todo_save">Save</string>
+
+    <!-- On Add Messages -->
     <string name="added_todo_text">Todo added!</string>
     <string name="added_todo_text_fail">Failed to upload todo</string>
     <string name="add_todo_progress">Saving new todo…</string>
-    <string name="get_todos_progress">Recovering todo list...</string>
-    <string name="get_todos_failure">Impossible de load todos</string>
+
+    <!-- Update form -->
+    <string name="update_todo_title">Update todo</string>
+    <string name="update_todo_submit">Save</string>
+
+    <!-- On Update Messages -->
+    <string name="updated_todo_text">Todo updated!</string>
+    <string name="updated_todo_text_fail">Failed to update todo</string>
+    <string name="update_todo_progress">Updating todo…</string>
+
+
+
 
 </resources>
