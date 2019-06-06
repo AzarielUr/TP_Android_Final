@@ -43,6 +43,12 @@
     <string name="done_error_message">Failed to update todo...</string>
     <string name="incompleted_message">Todo marked incomplete</string>
     <string name="incompleted_error_message">Failed to update todo</string>
+    <string name="delete_todo_progress">Deleting todo...</string>
+    <string name="deleted_message">Todo deleted</string>
+    <string name="delete_error_message">Failed to delete todo</string>
+    <string name="mark_done_dialog">Mark done</string>
+    <string name="delete_dialog">Delete</string>
+    <string name="mark_incomplete_dialog">Mark incomplete</string>
 
 
 </resources>

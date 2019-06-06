@@ -62,8 +62,8 @@ object TodoService {
 
     // --- DELETE ---
 
-    fun deleteTodo(uid: String): Task<Void> {
-        return TodoService.todoCollection.document(uid).delete()
+    fun deleteTodo(id: String): Task<Void> {
+        return TodoService.todoCollection.document(id).delete()
     }
 
 }

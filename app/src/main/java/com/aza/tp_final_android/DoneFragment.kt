@@ -14,7 +14,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import models.Todo
@@ -24,12 +23,12 @@ import service.TodoService
 class DoneFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListener {
     private var listener: OnFragmentInteractionListener? = null
 
-    var todoList: MutableList<Todo> = mutableListOf()
-    lateinit var todoRecyclerView: RecyclerView
-    lateinit var layoutManager: RecyclerView.LayoutManager
+    private var todoList: MutableList<Todo> = mutableListOf()
+    private lateinit var todoRecyclerView: RecyclerView
+    private lateinit var layoutManager: RecyclerView.LayoutManager
 
-    lateinit var adapter: TodoAdapter
-    lateinit var progress: ProgressDialog
+    private lateinit var adapter: TodoAdapter
+    private lateinit var progress: ProgressDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,32 +98,53 @@ class DoneFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
     override fun onTodoLongClick(view: View, position: Int) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
 
-        // TODO: Export res
-        val options = arrayOf("Mark incompleted", "Delete")
-        builder.setItems(options, DialogInterface.OnClickListener { dialog, which ->
+        val options = arrayOf(getString(R.string.mark_incomplete_dialog), getString(R.string.delete_dialog))
+        builder.setItems(options) { _, which ->
             run {
                 if (which == 0) //Update
                 {
-                    val id = todoList[position].id ?: ""
-                    TodoService.updateCompletion(id, false)
-                        .addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                Toast.makeText(activity, getString(R.string.incompleted_message), Toast.LENGTH_SHORT).show()
-                                showData()
-                            } else {
-                                Toast.makeText(activity, getString(R.string.incompleted_error_message), Toast.LENGTH_SHORT)
-                                    .show()
-                            }
-                        }
+                    markIncomplete(position)
                 }
                 if (which == 1) //Delete
                 {
-                    //TODO: Delete dialog
+                    deleteTodo(position)
                 }
             }
-        }).create().show()
+        }.create().show()
     }
 
+    private fun markIncomplete(position: Int)
+    {
+        val id = todoList[position].id ?: ""
+        TodoService.updateCompletion(id, false)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    Toast.makeText(activity, getString(R.string.incompleted_message), Toast.LENGTH_SHORT).show()
+                    showData()
+                } else {
+                    Toast.makeText(activity, getString(R.string.incompleted_error_message), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+    }
+
+    private fun deleteTodo(position: Int)
+    {
+        progress.setTitle(getString(R.string.delete_todo_progress))
+        progress.show()
+
+        val id = todoList[position].id ?: ""
+
+        TodoService.deleteTodo(id).addOnCompleteListener{
+            if (it.isSuccessful){
+                Toast.makeText(activity, getString(R.string.deleted_message), Toast.LENGTH_SHORT).show()
+                showData()
+            }
+            else {
+                Toast.makeText(activity, getString(R.string.delete_error_message), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {

@@ -4,8 +4,6 @@ import adapter.TodoAdapter
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -15,28 +13,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import models.Todo
 import service.TodoService
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 class HomeFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListener {
 
     private var listener: OnFragmentInteractionListener? = null
 
-    var todoList: MutableList<Todo> = mutableListOf()
-    lateinit var todoRecyclerView: RecyclerView
-    lateinit var layoutManager: RecyclerView.LayoutManager
+    private var todoList: MutableList<Todo> = mutableListOf()
+    private lateinit var todoRecyclerView: RecyclerView
+    private lateinit var layoutManager: RecyclerView.LayoutManager
 
-    lateinit var adapter: TodoAdapter
-    lateinit var progress: ProgressDialog
+    private lateinit var adapter: TodoAdapter
+    private lateinit var progress: ProgressDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,13 +62,12 @@ class HomeFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
         progress.show()
 
         TodoService.getIncompleteTodos()
-            .addOnCompleteListener(OnCompleteListener {
+            .addOnCompleteListener {
                 progress.dismiss()
 
                 if (!it.isSuccessful){
                     Toast.makeText(context, getString(R.string.get_todos_failure), Toast.LENGTH_SHORT).show()
-                }
-                else{
+                } else{
                     for (doc: DocumentSnapshot in it.result!!){
                         val id = doc.id
                         val title = doc.getString("title").toString()
@@ -90,7 +81,7 @@ class HomeFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
                     adapter = TodoAdapter(this, todoList)
                     todoRecyclerView.adapter = adapter
                 }
-            })
+            }
     }
 
     override fun onTodoClick(view: View, position: Int) {
@@ -108,29 +99,50 @@ class HomeFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
 
         // TODO: Export res
-        val options = arrayOf("Mark done", "Delete")
-        builder.setItems(options, DialogInterface.OnClickListener {
-                dialog, which ->
+        val options = arrayOf(getString(R.string.mark_done_dialog), getString(R.string.delete_dialog))
+        builder.setItems(options) { _, which ->
             run {
                 if (which == 0) //Update
                 {
-                    val id = todoList[position].id ?: ""
-                    TodoService.updateCompletion(id, true).addOnCompleteListener{
-                        if (it.isSuccessful){
-                            Toast.makeText(activity, getString(R.string.done_message), Toast.LENGTH_SHORT).show()
-                            showData()
-                        }
-                        else {
-                            Toast.makeText(activity, getString(R.string.done_error_message), Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-                if (which == 1) //Delete
+                    markDone(position)
+                } else if (which == 1) //Delete
                 {
-                    //TODO: Delete dialog
+                    deleteTodo(position)
                 }
             }
-        }).create().show()
+        }.create().show()
+    }
+
+    private fun markDone(position: Int)
+    {
+        val id = todoList[position].id ?: ""
+        TodoService.updateCompletion(id, true).addOnCompleteListener{
+            if (it.isSuccessful){
+                Toast.makeText(activity, getString(R.string.done_message), Toast.LENGTH_SHORT).show()
+                showData()
+            }
+            else {
+                Toast.makeText(activity, getString(R.string.done_error_message), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun deleteTodo(position: Int)
+    {
+        progress.setTitle(getString(R.string.delete_todo_progress))
+        progress.show()
+
+        val id = todoList[position].id ?: ""
+
+        TodoService.deleteTodo(id).addOnCompleteListener{
+            if (it.isSuccessful){
+                Toast.makeText(activity, getString(R.string.deleted_message), Toast.LENGTH_SHORT).show()
+                showData()
+            }
+            else {
+                Toast.makeText(activity, getString(R.string.delete_error_message), Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 
@@ -165,8 +177,7 @@ class HomeFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
         fun newInstance(param1: String, param2: String) =
             HomeFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
     }
