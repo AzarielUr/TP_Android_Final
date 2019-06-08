@@ -23,7 +23,7 @@
     <string name="todo_field_done">Done</string>
 
     <!-- Add form -->
-    <string name="add_todo_title">Add a Todo</string>
+    <string name="add_todo_title">Add a Todo!</string>
     <string name="add_todo_submit">Save</string>
 
     <!-- On Add Messages -->
@@ -49,6 +49,11 @@
     <string name="mark_done_dialog">Mark done</string>
     <string name="delete_dialog">Delete</string>
     <string name="mark_incomplete_dialog">Mark incomplete</string>
+    <string name="added_todo_image_fail">Todo created but image upload failed</string>
+    <string name="get_todo_image_fail">Error recovering todo image</string>
+    <string name="update_todo_image_fail">Failed to update image</string>
+    <string name="switch_done">Done</string>
+    <string name="switch_incomplete">Incomplete</string>
 
 
 </resources>

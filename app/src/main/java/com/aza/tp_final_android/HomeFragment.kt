@@ -89,6 +89,7 @@ class HomeFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
         val id = todoList[position].id ?: ""
         val title = todoList[position].title
         val comment = todoList[position].comment ?: ""
+        val done = todoList[position].done
 
         TodoActivity.newIntent(context, id, title, comment, false).run {
             startActivity(this)
@@ -98,7 +99,6 @@ class HomeFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
     override fun onTodoLongClick(view: View, position: Int) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
 
-        // TODO: Export res
         val options = arrayOf(getString(R.string.mark_done_dialog), getString(R.string.delete_dialog))
         builder.setItems(options) { _, which ->
             run {

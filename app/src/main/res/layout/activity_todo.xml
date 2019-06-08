@@ -1,47 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical"
               android:layout_gravity="center_vertical"
-              android:padding="16dp" android:gravity="center">
+              android:background="@drawable/backround1"
+              android:padding="16dp" android:gravity="center" android:orientation="vertical">
 
     <TextView
             android:text="@string/update_todo_title"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:id="@+id/tv_todo_title"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:layout_gravity="center_horizontal"
-    />
+            android:textColor="#E41919" android:fontFamily="cursive" android:textSize="60sp" android:textStyle="bold"
+            android:shadowColor="@android:color/white"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="2"/>
+
+    <Switch
+            android:text="Switch"
+            android:layout_width="121dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/completion_switch"/>
+
+
+    <ImageView
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:id="@+id/todo_image"
+            android:layout_marginTop="10dp"
+            app:srcCompat="@android:drawable/ic_menu_gallery"/>
 
     <EditText
             android:id="@+id/input_todo_title"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimaryDark"
+            android:layout_height="35dp"
             android:hint="@string/todo_field_title"
-            android:inputType="text"/>
+            android:inputType="text" android:backgroundTintMode="add"
+            android:background="@android:drawable/editbox_dropdown_light_frame"/>
 
     <EditText
             android:hint="@string/todo_field_comment"
             android:id="@+id/input_todo_comment"
             android:layout_width="fill_parent"
-            android:layout_height="75dp"
+            android:layout_height="121dp"
             android:gravity="top"
             android:padding="4dp"
             android:textSize="17sp"
             android:inputType="textMultiLine|textCapSentences"
             android:layout_gravity="start"
-    />
+            android:background="@android:drawable/editbox_dropdown_light_frame"/>
+
     <Button
             android:text="@string/update_todo_submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="159dp"
+            android:layout_height="44dp"
             android:id="@+id/btn_update_todo"
-    />
-
+            android:background="@drawable/oval_btn"
+            android:layout_marginTop="10dp" android:textColor="@android:color/white"/>
 
 </LinearLayout>

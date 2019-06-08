@@ -4,7 +4,6 @@ import adapter.TodoAdapter
 import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -49,9 +48,14 @@ class DoneFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
         layoutManager = LinearLayoutManager(context)
         todoRecyclerView.layoutManager = layoutManager
 
-        showData()
+
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        showData()
     }
 
     private fun showData() {
@@ -89,8 +93,9 @@ class DoneFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
         val id = todoList[position].id ?: ""
         val title = todoList[position].title
         val comment = todoList[position].comment ?: ""
+        val done = todoList[position].done
 
-        TodoActivity.newIntent(context, id, title, comment, false).run {
+        TodoActivity.newIntent(context, id, title, comment, true).run {
             startActivity(this)
         }
     }
