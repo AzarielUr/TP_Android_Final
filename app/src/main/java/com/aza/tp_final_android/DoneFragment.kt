@@ -93,7 +93,6 @@ class DoneFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
         val id = todoList[position].id ?: ""
         val title = todoList[position].title
         val comment = todoList[position].comment ?: ""
-        val done = todoList[position].done
 
         TodoActivity.newIntent(context, id, title, comment, true).run {
             startActivity(this)
@@ -151,7 +150,6 @@ class DoneFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
         }
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
     }
@@ -171,13 +169,11 @@ class DoneFragment : Fragment(), TodoAdapter.TodoViewHolder.TodoListClickListene
     }
 
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
 
     companion object {
 
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             HomeFragment().apply {

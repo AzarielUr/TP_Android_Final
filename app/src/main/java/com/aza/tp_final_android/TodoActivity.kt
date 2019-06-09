@@ -10,20 +10,20 @@ import android.graphics.BitmapFactory
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.se.omapi.SEService
 import android.support.v7.app.ActionBar
 import android.util.Log
-import android.view.View
 import android.widget.*
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.storage.StorageException
-import io.opencensus.tags.Tag
 import kotlinx.android.synthetic.main.activity_todo.*
 import kotlinx.android.synthetic.main.activity_todo.input_todo_comment
 import kotlinx.android.synthetic.main.activity_todo.input_todo_title
 import kotlinx.android.synthetic.main.activity_todo.todo_image
-import kotlinx.android.synthetic.main.fragment_add.*
 import service.TodoService
+import java.io.File
+import java.io.FileOutputStream
+import android.support.v4.content.FileProvider
+import java.lang.Exception
+
 
 class TodoActivity : AppCompatActivity() {
 
@@ -115,6 +115,11 @@ class TodoActivity : AppCompatActivity() {
             dispatchTakePictureIntent()
         }
 
+        iv_todo.setOnLongClickListener{
+            exportImage()
+            true
+        }
+
         btn_submit.setOnClickListener {
             progress.show()
 
@@ -123,6 +128,8 @@ class TodoActivity : AppCompatActivity() {
                     progress.dismiss()
 
                     if (it.isSuccessful){
+
+                        tv_title.text = title
 
                         if (imageChanged)
                         {
@@ -160,7 +167,8 @@ class TodoActivity : AppCompatActivity() {
         TodoService.getImage(id)
             .addOnSuccessListener {
                 val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
-                todo_image.setImageBitmap(bitmap)
+                image = bitmap
+                todo_image.setImageBitmap(image)
             }
             .addOnFailureListener{
                 if (it is StorageException)
@@ -196,4 +204,31 @@ class TodoActivity : AppCompatActivity() {
         }
     }
 
+    private fun exportImage() {
+
+        if (image != null) {
+            try{
+                val cachePath = File(cacheDir, "images")
+                cachePath.mkdirs()
+                val stream = FileOutputStream("$cachePath/image.png")
+                image!!.compress(Bitmap.CompressFormat.PNG,100, stream)
+                stream.close()
+
+
+                val newFile = File(cachePath, "image.png")
+
+                val uri = FileProvider.getUriForFile(this, "$packageName.fileprovider", newFile)
+
+                Intent(Intent.ACTION_SEND).also {sharePictureIntent ->
+                    sharePictureIntent.putExtra(Intent.EXTRA_STREAM, uri)
+                    sharePictureIntent.type = "image/jpeg"
+
+                    sharePictureIntent.resolveActivity(packageManager)?.also {
+                        startActivity(Intent.createChooser(sharePictureIntent, getString(R.string.export_image)))
+                    }
+                }
+            }
+            catch (e: Exception ) {e.printStackTrace()}
+        }
+    }
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyToDo</string>
+    <string name="add_todo_progress">Ajout d\'une nouvelle todo</string>
+    <string name="add_todo_submit">Enregistrer</string>
+    <string name="add_todo_title">Ajout d\'une Todo</string>
+    <string name="added_todo_image_fail">Todo ajoutée mais erreur à l\'envoi de l\'image</string>
+    <string name="added_todo_text">Todo enregistrée!</string>
+    <string name="added_todo_text_fail">Impossible d\'enregistrer la todo</string>
+    <string name="delete_dialog">Supprimer</string>
+    <string name="delete_error_message">Impossible de supprimer la todo</string>
+    <string name="delete_todo_progress">Suppression…</string>
+    <string name="deleted_message">Todo supprimée</string>
+    <string name="done_error_message">Impossible de mettre à jour la todo</string>
+    <string name="done_message">Todo marquée comme terminée!</string>
+    <string name="get_todo_image_fail">Impossible de charger l\'image</string>
+    <string name="get_todos_failure">Impossible de charger les todos</string>
+    <string name="get_todos_progress">Récupération des todos…</string>
+    <string name="incompleted_error_message">Impossible de mettre à jour la todo</string>
+    <string name="incompleted_message">Todo marquée comme à faire</string>
+    <string name="mark_done_dialog">Terminé</string>
+    <string name="mark_incomplete_dialog">A faire</string>
+    <string name="switch_done">Terminé</string>
+    <string name="switch_incomplete">A faire</string>
+    <string name="title_add_todo">Ajouter</string>
+    <string name="title_dashboard">Terminé</string>
+    <string name="title_home">A faire</string>
+    <string name="todo_field_comment">Commentaire</string>
+    <string name="todo_field_done">Complétion</string>
+    <string name="todo_field_title">Titre</string>
+    <string name="update_todo_image_fail">Impossible de mettre à jour l\'image</string>
+    <string name="update_todo_progress">Mise à jour…</string>
+    <string name="update_todo_submit">Enregistrer</string>
+    <string name="update_todo_title">Modifier la todo</string>
+    <string name="updated_todo_text">Todo mise à jour</string>
+    <string name="updated_todo_text_fail">Impossible de mettre à jour la todo</string>
+    <string name="export_image">Export image</string>
+</resources>
