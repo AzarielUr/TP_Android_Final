@@ -121,9 +121,9 @@ class AddFragment : Fragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            image = data.extras!!.get("data") as Bitmap
+            image = data?.extras!!.get("data") as Bitmap
             todo_image.setImageBitmap(image)
         }
     }
